@@ -102,10 +102,10 @@ namespace DapperRepository
         {
             var type = typeof(TRepository);
             var typeName = type.Name;
-
+            //CommandTimeout
             if (!Repositories.ContainsKey(typeName))
             {
-                var repositoryInstance = Activator.CreateInstance(type, Transaction, CommandTimeout);
+                var repositoryInstance = Activator.CreateInstance(type, Transaction, 10);
                 Repositories.Add(typeName, repositoryInstance);
             }
 
