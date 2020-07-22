@@ -4,6 +4,7 @@ using DemoRepository.EF;
 using EFRepository;
 using System;
 using System.Data;
+using System.Data.SqlClient;
 
 namespace DemoRepository
 {
@@ -19,8 +20,10 @@ namespace DemoRepository
 
         public static void DemoDapper()
         {
+
             // TODO 等待完成 使用連線注入(可以是SQL或SQLite等等)
-            IDbConnection connection = null;
+            IDbConnection connection = SqlConnet.CreateDBConnection(SqlConnet.DBTYPE.SQLSERVER, 
+                                                                   "Server=I29042\\WINCC;Database=TEST;user=sa;password=laser99;");
 
             using (var uow = new DapperUnitOfWork(connection))
             {
