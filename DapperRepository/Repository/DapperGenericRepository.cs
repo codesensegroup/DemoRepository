@@ -11,15 +11,10 @@ namespace DapperRepository
     /// <summary>
     /// 泛型Repository版本，(Table版本)
     /// </summary>
-    public class DapperGenericRepository<TEntity> : DapperRepositoryTemplate, IGenericRepository<TEntity>
+    public class DapperGenericRepository<TEntity> : DapperRepositoryTemplate, IDapperGenericRepository<TEntity>
         where TEntity : class, new()
-    {
-        static DapperGenericRepository()
-        {
-            if (SqlMapperExtensions.TableNameMapper == null) SqlMapperExtensions.TableNameMapper += (t) => t.Name;
-        }
-
-        public DapperGenericRepository(IDbTransaction transaction, int? commandTimeout = null) : base(transaction, commandTimeout)
+    { 
+        public DapperGenericRepository(Func<IDbTransaction> transactionFactory, int? commandTimeout = null) : base(transactionFactory, commandTimeout)
         {
         }
 

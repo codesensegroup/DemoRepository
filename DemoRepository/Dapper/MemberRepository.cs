@@ -26,7 +26,7 @@ namespace DemoRepository.Dapper
     /// </summary>
     public class MemberRepository : DapperRepositoryTemplate, IMemberRepository
     {
-        public MemberRepository(IDbTransaction transaction, int? commandTimeout = null) : base(transaction, commandTimeout)
+        public MemberRepository(Func<IDbTransaction> transaction, int? commandTimeout = null) : base(transaction, commandTimeout)
         {
         }
 

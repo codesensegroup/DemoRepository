@@ -23,11 +23,13 @@ namespace DemoRepository.Dapper
         {
         }
 
+        public IBanknoteVaultRepository BanknoteVaultRepository => throw new NotImplementedException();
+
         // 這邊有兩種方式
         // (1) 使用DI Property注入的方式
         // public IBanknoteVaultRepository BanknoteVaultRepository { get; set; }
 
         // (2) 自行宣告Repository
-        public IBanknoteVaultRepository BanknoteVaultRepository => _banknoteVaultRepository ?? (_banknoteVaultRepository = new BanknoteVaultRepository(Transaction));
+        //public IBanknoteVaultRepository BanknoteVaultRepository => _banknoteVaultRepository ?? (_banknoteVaultRepository = new BanknoteVaultRepository(Transaction));
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Dapper.Contrib.Extensions;
 using DapperRepository;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,12 @@ namespace DemoRepository.Dapper
         /// </summary>
         public virtual string TableName => typeof(TEntity).Name;
 
-        public DapperGenericRepository(IDbTransaction transaction, int? commandTimeout = null) : base(transaction, commandTimeout)
+        static DapperGenericRepository()
+        {
+            if (SqlMapperExtensions.TableNameMapper == null) SqlMapperExtensions.TableNameMapper += (t) => t.Name;
+        }
+
+        public DapperGenericRepository(Func<IDbTransaction> transactionFactory, int? commandTimeout = null) : base(transactionFactory, commandTimeout)
         {
             if (IsCreateTable) Connection.Execute(GetCreateTableSQL());
         }

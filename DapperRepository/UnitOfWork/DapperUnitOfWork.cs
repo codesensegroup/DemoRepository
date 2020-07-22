@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 
 namespace DapperRepository
-{ 
+{
     /// <summary>    
     /// 介面型(DDD) + 泛型(Table) = 混搭Unit of work
     /// 使用反射取得Repository來使用
@@ -35,7 +35,7 @@ namespace DapperRepository
                 if (types.Count() == 0) throw new ArgumentNullException($"Can't find the {typeName}");
                 if (types.Count() > 1) throw new ArgumentOutOfRangeException($"{typeName} more than one");
 
-                var repositoryInstance = Activator.CreateInstance(types.Single(), Transaction, CommandTimeout);
+                var repositoryInstance = Activator.CreateInstance(types.Single(), new Func<IDbTransaction>(() => Transaction), CommandTimeout);
                 Repositories.Add(typeName, repositoryInstance);
             }
 
@@ -49,11 +49,7 @@ namespace DapperRepository
             if (!Repositories.ContainsKey(type))
             {
                 var repositoryType = typeof(DapperGenericRepository<>);
-
-                var repositoryInstance =
-                    Activator.CreateInstance(repositoryType
-                            .MakeGenericType(typeof(TEntity)), Transaction, CommandTimeout);
-
+                var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(TEntity)), new Func<IDbTransaction>(() => Transaction), CommandTimeout);
                 Repositories.Add(type, repositoryInstance);
             }
 

@@ -31,8 +31,8 @@ namespace DapperRepository
         public UnitOfWorkTemplate(IDbConnection connection)
         {
             Connection = connection;
-            //Connection.Open();
-            //Transaction = Connection.BeginTransaction();
+            Connection.Open();
+            Transaction = Connection.BeginTransaction();
         }
 
         ~UnitOfWorkTemplate()
@@ -59,6 +59,7 @@ namespace DapperRepository
                     }
                     if (Connection != null)
                     {
+                        Connection.Close();
                         Connection.Dispose();
                         Connection = null;
                     }
@@ -80,8 +81,14 @@ namespace DapperRepository
                 Transaction.Rollback();
                 throw;
             }
+            finally
+            {
+                // 由於Commit和Rollback後，會將交易取消，因此釋放交易後，再重新創建交易
+                Transaction.Dispose();
+                Transaction = Connection.BeginTransaction();
+            }
         }
-
+         
         protected virtual void Disposing() { }
     }
 }

@@ -17,8 +17,6 @@ namespace DemoRepository.Dapper
 
     public class BanknoteVaultRepository : DapperGenericRepository<BanknoteVault>, IBanknoteVaultRepository
     {
-        public override bool IsCreateTable => false;
-
         private static readonly string TAG_ID = "TagId";
 
         private static readonly string NUMBER_01 = "Number01";
@@ -44,13 +42,13 @@ namespace DemoRepository.Dapper
             }
         }
 
-        public BanknoteVaultRepository(IDbTransaction transaction, int? commandTimeout = null) : base(transaction, commandTimeout)
+        public BanknoteVaultRepository(Func<IDbTransaction> transactionFactory, int? commandTimeout = null) : base(transactionFactory, commandTimeout)
         {
         }
 
         public IEnumerable<BanknoteVault> FindTagId(uint tagId)
         {
-            var sql = $"Select * from {TableName} Where @{TAG_ID}=?{TAG_ID}?";
+            var sql = $"Select * from {TableName} Where {TAG_ID}=?{TAG_ID}?";
             return Connection.Query<BanknoteVault>(sql, new { TagId = tagId }).AsList();
         }
     }
