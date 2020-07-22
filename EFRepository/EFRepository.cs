@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace EFRepository
 {
-    public abstract class EFRepository<TEntity> : IRepository<TEntity>
+    public abstract class EFRepository<TEntity> : IGenericRepository<TEntity>
           where TEntity : class, new()
     {
         protected DbContext Context { get; private set; }

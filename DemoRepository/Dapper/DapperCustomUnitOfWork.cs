@@ -8,18 +8,18 @@ using System.Text;
 namespace DemoRepository.Dapper
 {
     /// <summary>
-    /// 為了要注入方便使用
+    /// 介面型的Unit of work
     /// </summary>
-    public interface ICustomDapperUnitOfWork : IUnitOfWork
+    public interface IDapperCustomUnitOfWork : IUnitOfWork
     {
         IBanknoteVaultRepository BanknoteVaultRepository { get; }
     }
 
-    public class CustomDapperUnitOfWork : BaseDapperUnitOfWork, ICustomDapperUnitOfWork
+    public class DapperCustomUnitOfWork : UnitOfWorkTemplate, IDapperCustomUnitOfWork
     {
         private IBanknoteVaultRepository _banknoteVaultRepository;
 
-        public CustomDapperUnitOfWork(IDbConnection connection) : base(connection)
+        public DapperCustomUnitOfWork(IDbConnection connection) : base(connection)
         {
         }
 

@@ -1,6 +1,5 @@
 ﻿using InterfaceRepository;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
@@ -10,7 +9,7 @@ namespace DapperRepository
     /// <summary>
     /// UnitOfWork共用抽象類別
     /// </summary>
-    public abstract class BaseDapperUnitOfWork : IUnitOfWork
+    public abstract class UnitOfWorkTemplate : IUnitOfWork
     {
         /// <summary>
         /// DB連線
@@ -29,14 +28,14 @@ namespace DapperRepository
 
         private bool _disposed = false;
 
-        public BaseDapperUnitOfWork(IDbConnection connection)
+        public UnitOfWorkTemplate(IDbConnection connection)
         {
             Connection = connection;
-            Connection.Open();
-            Transaction = Connection.BeginTransaction();
+            //Connection.Open();
+            //Transaction = Connection.BeginTransaction();
         }
 
-        ~BaseDapperUnitOfWork()
+        ~UnitOfWorkTemplate()
         {
             Dispose(false);
         }
@@ -85,38 +84,4 @@ namespace DapperRepository
 
         protected virtual void Disposing() { }
     }
-
-    /// <summary>
-    /// 使用反射取得Repository來使用
-    /// </summary>
-    public class DapperUnitOfWork : BaseDapperUnitOfWork, IDapperUnitOfWork
-    {
-        private Hashtable Repositories { get; set; } = new Hashtable();
-
-
-        public DapperUnitOfWork(IDbConnection connection) : base(connection)
-        {
-        }
-
-        public TRepository GetRepository<TRepository>() where TRepository : class
-        {
-            var type = typeof(TRepository);
-            var typeName = type.Name;
-
-            if (!Repositories.ContainsKey(typeName))
-            {
-                var repositoryInstance = Activator.CreateInstance(type, Transaction, CommandTimeout);
-                Repositories.Add(typeName, repositoryInstance);
-            }
-
-            return (TRepository)Repositories[typeName];
-        }
-
-        protected override void Disposing()
-        {
-            Repositories.Clear();
-            Repositories = null;
-        }
-    }
-
 }

@@ -1,4 +1,5 @@
 ﻿using Dapper.Contrib.Extensions;
+using InterfaceRepository;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,26 +9,18 @@ using System.Text;
 namespace DapperRepository
 {
     /// <summary>
-    /// Domain Drvier Design Repository版本
+    /// 泛型Repository版本，(Table版本)
     /// </summary>
-    public abstract class DapperRepository<TEntity> : IDapperRepository<TEntity>
+    public class DapperGenericRepository<TEntity> : DapperRepositoryTemplate, IGenericRepository<TEntity>
         where TEntity : class, new()
     {
-        protected IDbTransaction Transaction { get; }
-
-        protected IDbConnection Connection => Transaction.Connection;
-
-        protected int? CommandTimeout { get; private set; }
-
-        static DapperRepository()
+        static DapperGenericRepository()
         {
             if (SqlMapperExtensions.TableNameMapper == null) SqlMapperExtensions.TableNameMapper += (t) => t.Name;
         }
 
-        public DapperRepository(IDbTransaction transaction, int? commandTimeout = null)
+        public DapperGenericRepository(IDbTransaction transaction, int? commandTimeout = null) : base(transaction, commandTimeout)
         {
-            Transaction = transaction;
-            CommandTimeout = commandTimeout;
         }
 
         public virtual void Add(TEntity entity) => Connection.Insert(entity, Transaction, CommandTimeout);

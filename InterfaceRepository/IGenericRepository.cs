@@ -3,8 +3,8 @@ using System.Linq;
 
 namespace InterfaceRepository
 {
-    public interface IRepository<TEntity>
-       where TEntity : new()
+    public interface IGenericRepository<TEntity>
+       where TEntity : class, new()
     {
         /// <summary>
         /// 新增物件

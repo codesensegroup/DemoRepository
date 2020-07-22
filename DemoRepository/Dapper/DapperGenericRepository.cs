@@ -8,18 +8,9 @@ using System.Text;
 namespace DemoRepository.Dapper
 {
     /// <summary>
-    /// 定義Key為long搭配下方行DapperTableRepository行為使用
-    /// 也可以自己定義Key為string類型
+    /// 泛型版本，(限制的IDapperModel，可以插入時，同時新增、更新時間)
     /// </summary>
-    public interface IDapperTableRepository<TEntity> : IDapperTableRepository<long, TEntity>
-     where TEntity : class, new()
-    {
-    }
-
-    /// <summary>
-    /// Table Repository版本 (限制的IDapperModel，可以插入時，同時新增、更新時間)
-    /// </summary>
-    public abstract class DapperTableRepository<TEntity> : DapperTableRepository<long, TEntity>, IDapperTableRepository<TEntity>
+    public class DapperGenericRepository<TEntity> : DapperRepository.DapperGenericRepository<TEntity>, IDapperGenericRepository<TEntity>
         where TEntity : class, IDapperModel, new()
     {
         /// <summary>
@@ -37,7 +28,7 @@ namespace DemoRepository.Dapper
         /// </summary>
         public virtual string TableName => typeof(TEntity).Name;
 
-        public DapperTableRepository(IDbTransaction transaction, int? commandTimeout = null) : base(transaction, commandTimeout)
+        public DapperGenericRepository(IDbTransaction transaction, int? commandTimeout = null) : base(transaction, commandTimeout)
         {
             if (IsCreateTable) Connection.Execute(GetCreateTableSQL());
         }

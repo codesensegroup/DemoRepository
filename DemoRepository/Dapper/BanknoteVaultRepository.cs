@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using DapperRepository;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,14 +8,14 @@ using System.Text;
 namespace DemoRepository.Dapper
 {
     /// <summary>
-    /// 自訂的Repository行為
+    /// 介面型 + 泛型 混搭
     /// </summary>
-    public interface IBanknoteVaultRepository : IDapperTableRepository<BanknoteVault>
+    public interface IBanknoteVaultRepository : IDapperGenericRepository<BanknoteVault>
     {
         IEnumerable<BanknoteVault> FindTagId(uint tagId);
     }
 
-    public class BanknoteVaultRepository : DapperTableRepository<BanknoteVault>, IBanknoteVaultRepository
+    public class BanknoteVaultRepository : DapperGenericRepository<BanknoteVault>, IBanknoteVaultRepository
     {
         public override bool IsCreateTable => false;
 

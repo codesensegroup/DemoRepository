@@ -12,6 +12,8 @@ namespace DemoRepository
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+
+            DemoDapper();
         }
 
 
@@ -22,16 +24,38 @@ namespace DemoRepository
 
             using (var uow = new DapperUnitOfWork(connection))
             {
-                var banknoteVaultRepository = uow.GetRepository<IBanknoteVaultRepository>();
+                //// 介面型 + 泛型 (混搭)
+                //var banknoteVaultRepository = uow.GetRepository<IBanknoteVaultRepository>();
+                //var vaults = banknoteVaultRepository.FindTagId(1);   // 找尋資料
+                //var vault = new BanknoteVault()
+                //{
+                //    TagId = 10000,
+                //    Number01 = 1,
+                //    Number02 = 2,
+                //    Number03 = 3,
+                //    Number04 = 4,
+                //    Number05 = 5,
+                //};
 
-                // 找尋資料
-                var vault = banknoteVaultRepository.FindTagId(1);
+                //banknoteVaultRepository.Add(vault);                 // 新增資料
+                //vault.Number01 += 10;
+                //banknoteVaultRepository.Update(vault);              // 更新資料
+                //banknoteVaultRepository.Remove(vault);              // 刪除資料
+
+
+                // 介面型
+                var memberRepository = uow.GetRepository<IMemberRepository>();
+                //memberRepository.Add()
+                //memberRepository.Read()
+
+                // 泛型 (同上方)
+                var employeesRepository = uow.GetGenericRepository<Employees>();
 
                 // 儲存資料
                 uow.Save();
             }
 
-            using (var uow = new CustomDapperUnitOfWork(connection))
+            using (var uow = new DapperCustomUnitOfWork(connection))
             {
                 var vault = uow.BanknoteVaultRepository.FindTagId(1);
 
