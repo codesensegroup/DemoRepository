@@ -11,7 +11,7 @@ namespace DemoRepository.Dapper
     /// <summary>
     /// 泛型版本，(限制的IDapperModel，可以插入時，同時新增、更新時間)
     /// </summary>
-    public class CustomDapperGenericRepository<TEntity> : DapperRepository.DapperGenericRepository<TEntity>, IDapperGenericRepository<TEntity>
+    public class CustomDapperGenericRepository<TEntity> : DapperGenericRepository<TEntity>
         where TEntity : class, IDapperModel, new()
     {
         /// <summary>
