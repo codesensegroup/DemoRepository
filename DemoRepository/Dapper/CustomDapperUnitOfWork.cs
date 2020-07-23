@@ -10,16 +10,16 @@ namespace DemoRepository.Dapper
     /// <summary>
     /// 介面型的Unit of work
     /// </summary>
-    public interface IDapperCustomUnitOfWork : IUnitOfWork
+    public interface ICustomDapperUnitOfWork : IUnitOfWork
     {
         IBanknoteVaultRepository BanknoteVaultRepository { get; }
     }
 
-    public class DapperCustomUnitOfWork : UnitOfWorkTemplate, IDapperCustomUnitOfWork
+    public class CustomDapperUnitOfWork : UnitOfWorkTemplate, ICustomDapperUnitOfWork
     {
         private IBanknoteVaultRepository _banknoteVaultRepository;
 
-        public DapperCustomUnitOfWork(IDbConnection connection) : base(connection)
+        public CustomDapperUnitOfWork(IDbConnection connection) : base(connection)
         {
         }
 

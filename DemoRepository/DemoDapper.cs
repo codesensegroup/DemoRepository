@@ -12,14 +12,36 @@ namespace DemoRepository
     {
         private readonly IDbConnection _connection;
 
-        public DemoDapper(IDbConnection connection)
+        private IDapperGenericRepository<Customers> _customersRepository;
+
+        public DemoDapper(IDbConnection connection, IDapperGenericRepository<Customers> customersRepository)
         {
             _connection = connection;
+            _customersRepository = customersRepository;
             CreateMember();
             CreateEmployees();
+            CreateCustomers();
         }
 
         public void Demo()
+        {
+            DemoOneTable();
+            DemoUnitOfWork();
+        }
+
+        private void DemoOneTable()
+        {
+            var customers = new Customers
+            {
+                Name = "志鴻",
+                City = "金門",
+                Address = "金門路",
+                Phone = "7788999"
+            };
+            _customersRepository.Add(customers);
+        }
+
+        private void DemoUnitOfWork()
         {
             using (var uow = new DapperUnitOfWork(_connection))
             {
@@ -109,6 +131,12 @@ namespace DemoRepository
         private void CreateMember()
         {
             var sql = "CREATE TABLE IF NOT EXISTS Member(Id INTEGER PRIMARY KEY AUTOINCREMENT, Name VARCHAR(30) NOT NULL, Age TINYINT NOT NULL, Phone VARCHAR(30) NOT NULL, Address VARCHAR(30) NOT NULL)";
+            _connection.Execute(sql);
+        }
+
+        private void CreateCustomers()
+        {
+            var sql = "CREATE TABLE IF NOT EXISTS Customers(Id INTEGER PRIMARY KEY AUTOINCREMENT, Name VARCHAR(30) NOT NULL, City VARCHAR(30) NOT NULL, Address VARCHAR(30) NOT NULL, Phone VARCHAR(30) NOT NULL)";
             _connection.Execute(sql);
         }
     }

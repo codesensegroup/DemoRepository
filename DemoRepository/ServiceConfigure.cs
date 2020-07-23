@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using DapperRepository;
+using DemoRepository.Dapper;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -34,7 +36,8 @@ namespace DemoRepository
             //});
              
             // 創建IDbConnection
-            collection.AddScoped((c) => c.GetService<IDbFactory>().Create());
+            collection.AddTransient(c => c.GetService<IDbFactory>().Create());
+            collection.AddTransient<IDapperGenericRepository<Customers>>(c => new DapperGenericRepository<Customers>(c.GetService<IDbConnection>()));
 
             // 創建Demo用的Dapper
             collection.AddScoped<DemoDapper>();

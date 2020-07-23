@@ -12,21 +12,32 @@ namespace DapperRepository
     /// </summary>
     public abstract class DapperRepositoryTemplate
     {
-        private Func<IDbTransaction> TransactionFactory { get; }
+        private readonly IDbConnection _connection;
 
-        protected IDbTransaction Transaction => TransactionFactory.Invoke();
+        private readonly Func<IDbTransaction> _transactionFactory;
 
-        protected IDbConnection Connection => Transaction.Connection;
+        protected IDbTransaction Transaction => _transactionFactory?.Invoke();
+
+        protected IDbConnection Connection => _connection ?? Transaction.Connection;
 
         protected int? CommandTimeout { get; }
 
         /// <summary>
         /// 創建IDbTransaction工廠，每次引用的時候，都會去重新取得IDbTransaction的參考位址，否則Commit之後，Connection會被釋放掉，造成null reference
+        /// DB交易
         /// </summary>
         public DapperRepositoryTemplate(Func<IDbTransaction> transactionFactory, int? commandTimeout = null)
         {
-            TransactionFactory = transactionFactory;
-            CommandTimeout = commandTimeout;             
+            _transactionFactory = transactionFactory;
+            CommandTimeout = commandTimeout;
         }
-    }     
+
+        /// <summary>
+        /// 單獨對Table進行操作
+        /// </summary>
+        public DapperRepositoryTemplate(IDbConnection connection)
+        {
+            _connection = connection;
+        }
+    }
 }

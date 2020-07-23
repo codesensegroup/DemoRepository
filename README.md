@@ -1,11 +1,11 @@
 ## Demo Repository
 
 ### Dapper Repository¤ÀÃþ
-- Repository Domain Driven Design(DDD)
-- Repository Table Design
-- Repository Interace Design
+- Interface - Domain Driven Design(DDD)
+- Gerenic Interface - Table Design
+- Combine Interface - Interface + Gerenic Interface
 
 ### EF Repository
-- Repository Domain Driven Design(DDD)
-- Repository Table Design
-- Repository Interace Design
+- Interface - Domain Driven Design(DDD)
+- Gerenic Interface - Table Design
+- Combine Interface - Interface + Gerenic Interface

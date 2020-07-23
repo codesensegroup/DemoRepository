@@ -11,7 +11,7 @@ namespace DemoRepository.Dapper
     /// <summary>
     /// 泛型版本，(限制的IDapperModel，可以插入時，同時新增、更新時間)
     /// </summary>
-    public class DapperGenericRepository<TEntity> : DapperRepository.DapperGenericRepository<TEntity>, IDapperGenericRepository<TEntity>
+    public class CustomDapperGenericRepository<TEntity> : DapperRepository.DapperGenericRepository<TEntity>, IDapperGenericRepository<TEntity>
         where TEntity : class, IDapperModel, new()
     {
         /// <summary>
@@ -28,13 +28,8 @@ namespace DemoRepository.Dapper
         /// 取得表格名稱
         /// </summary>
         public virtual string TableName => typeof(TEntity).Name;
-
-        static DapperGenericRepository()
-        {
-            if (SqlMapperExtensions.TableNameMapper == null) SqlMapperExtensions.TableNameMapper += (t) => t.Name;
-        }
-
-        public DapperGenericRepository(Func<IDbTransaction> transactionFactory, int? commandTimeout = null) : base(transactionFactory, commandTimeout)
+         
+        public CustomDapperGenericRepository(Func<IDbTransaction> transactionFactory, int? commandTimeout = null) : base(transactionFactory, commandTimeout)
         {
             if (IsCreateTable) Connection.Execute(GetCreateTableSQL());
         }

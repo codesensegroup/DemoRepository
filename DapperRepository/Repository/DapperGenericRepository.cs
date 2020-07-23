@@ -13,11 +13,20 @@ namespace DapperRepository
     /// </summary>
     public class DapperGenericRepository<TEntity> : DapperRepositoryTemplate, IDapperGenericRepository<TEntity>
         where TEntity : class, new()
-    { 
-        public DapperGenericRepository(Func<IDbTransaction> transactionFactory, int? commandTimeout = null) : base(transactionFactory, commandTimeout)
+    {
+        static DapperGenericRepository()
+        {
+            if (SqlMapperExtensions.TableNameMapper == null) SqlMapperExtensions.TableNameMapper += (t) => t.Name;
+        }
+
+        public DapperGenericRepository(IDbConnection connection) : base(connection)
         {
         }
 
+        public DapperGenericRepository(Func<IDbTransaction> transactionFactory, int? commandTimeout = null) : base(transactionFactory, commandTimeout)
+        {
+        }
+         
         public virtual void Add(TEntity entity) => Connection.Insert(entity, Transaction, CommandTimeout);
 
         public virtual void AddRange(params TEntity[] entities) => Connection.Insert(entities, Transaction, CommandTimeout);

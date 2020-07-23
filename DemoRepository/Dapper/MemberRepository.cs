@@ -8,6 +8,9 @@ using System.Text;
 
 namespace DemoRepository.Dapper
 {
+    /// <summary>
+    /// 介面型(DDD版本)
+    /// </summary>
     public interface IMemberRepository
     {
         /// <summary>
@@ -20,10 +23,7 @@ namespace DemoRepository.Dapper
         /// </summary>
        IEnumerable<Member> Read(int age);
     }
-
-    /// <summary>
-    /// 介面型(DDD版本)
-    /// </summary>
+ 
     public class MemberRepository : DapperRepositoryTemplate, IMemberRepository
     {
         public MemberRepository(Func<IDbTransaction> transaction, int? commandTimeout = null) : base(transaction, commandTimeout)

@@ -8,14 +8,14 @@ using System.Text;
 namespace DemoRepository.Dapper
 {
     /// <summary>
-    /// 介面型 + 泛型 混搭
+    /// 混合型(介面 + 泛型)Repository
     /// </summary>
     public interface IBanknoteVaultRepository : IDapperGenericRepository<BanknoteVault>
     {
         IEnumerable<BanknoteVault> FindTagId(uint tagId);
     }
 
-    public class BanknoteVaultRepository : DapperGenericRepository<BanknoteVault>, IBanknoteVaultRepository
+    public class BanknoteVaultRepository : CustomDapperGenericRepository<BanknoteVault>, IBanknoteVaultRepository
     {
         private static readonly string TAG_ID = "TagId";
 
