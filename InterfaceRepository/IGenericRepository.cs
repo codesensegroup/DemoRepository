@@ -12,7 +12,7 @@ namespace InterfaceRepository
         void Add(TEntity entity);
 
         /// <summary>
-        /// 新增物件
+        /// 新增物件         
         /// </summary>
         void AddRange(params TEntity[] entities);
 

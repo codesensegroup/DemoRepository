@@ -13,6 +13,8 @@ namespace DemoRepository.Dapper
     public interface IBanknoteVaultRepository : IDapperGenericRepository<BanknoteVault>
     {
         IEnumerable<BanknoteVault> FindTagId(uint tagId);
+
+        //IEnumerable<BanknoteVault> FindTagId(uint tagId);
     }
 
     public class BanknoteVaultRepository : CustomDapperGenericRepository<BanknoteVault>, IBanknoteVaultRepository

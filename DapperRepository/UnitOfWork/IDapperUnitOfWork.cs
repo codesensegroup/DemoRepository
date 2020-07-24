@@ -9,7 +9,7 @@ namespace DapperRepository
     public interface IDapperUnitOfWork : IUnitOfWork
     {
         /// <summary>
-        /// 取得介面型(DDD)
+        /// 取得介面型(DDD) + 混合型(DDD + Table)
         /// </summary>
         TRepository GetRepository<TRepository>() where TRepository : class;
 

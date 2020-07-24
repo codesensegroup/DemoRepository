@@ -19,10 +19,16 @@ namespace DapperRepository
             if (SqlMapperExtensions.TableNameMapper == null) SqlMapperExtensions.TableNameMapper += (t) => t.Name;
         }
 
+        /// <summary>
+        /// 傳統
+        /// </summary>
         public DapperGenericRepository(IDbConnection connection) : base(connection)
         {
         }
 
+        /// <summary>
+        /// 交易Unit of work
+        /// </summary>
         public DapperGenericRepository(Func<IDbTransaction> transactionFactory, int? commandTimeout = null) : base(transactionFactory, commandTimeout)
         {
         }

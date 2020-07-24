@@ -18,6 +18,7 @@ namespace DemoRepository
         {
             _connection = connection;
             _customersRepository = customersRepository;
+            //_customersRepository = new DapperGenericRepository<Customers>(_connection);
             CreateMember();
             CreateEmployees();
             CreateCustomers();
@@ -25,7 +26,7 @@ namespace DemoRepository
 
         public void Demo()
         {
-            DemoOneTable();
+            //DemoOneTable();
             DemoUnitOfWork();
         }
 
@@ -61,8 +62,8 @@ namespace DemoRepository
                 vault.Number01 += 10;
                 banknoteVaultRepository.Update(vault);              // 更新資料
 
-                // 新增資料
-                var findVault = banknoteVaultRepository.FindTagId(10000);
+                // 找TagId
+                //var findVault = banknoteVaultRepository.FindTagId(10000);
 
                 // 介面型
                 var memberRepository = uow.GetRepository<IMemberRepository>();
@@ -75,7 +76,7 @@ namespace DemoRepository
                 };
                 memberRepository.Add(member);
 
-                // 泛型 (同上方)
+                // 泛型 (同上方) CRUD
                 var employeesRepository = uow.GetGenericRepository<Employees>();
                 var employees = new Employees()
                 {
@@ -83,6 +84,8 @@ namespace DemoRepository
                     Title = "SoftWare Engineer"
                 };
                 employeesRepository.Add(employees);
+
+                //throw new Exception("Don't save the Member and Employees.");
 
                 // 儲存資料
                 uow.Save();
@@ -112,7 +115,7 @@ namespace DemoRepository
 
                 #region --- 第三次交易(失敗) ---
                 // 故意測試，此筆交易是否會成功
-                //var employeesRepositoryNew = uow.GetGenericRepository<Employees>();
+                var employeesRepositoryNew = uow.GetGenericRepository<Employees>();
                 employeesRepository.Add(new Employees() { Name = "Mario", Title = "Engineer" });
                 throw new Exception("Don't save the Member and Employees.");
 

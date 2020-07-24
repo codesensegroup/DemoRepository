@@ -34,7 +34,7 @@ namespace DemoRepository
             //{
             //    return new SqlDbFactory("Server=I29042\\WINCC;Database=TEST;user=sa;password=laser99;");
             //});
-             
+
             // 創建IDbConnection
             collection.AddTransient(c => c.GetService<IDbFactory>().Create());
             collection.AddTransient<IDapperGenericRepository<Customers>>(c => new DapperGenericRepository<Customers>(c.GetService<IDbConnection>()));
